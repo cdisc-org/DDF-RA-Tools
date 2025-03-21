@@ -4,6 +4,8 @@ from jsonpath_ng.ext import parse
 from ddf_ra_tools.model.api_class import APIClass, APIClassDict
 from ddf_ra_tools.model.api_class_property import APIClassProperty
 
+from ddf_ra_tools.config import API_ROOT_SCHEMA
+
 
 class APIParser:
     def __init__(self, apiFile: str):
@@ -16,51 +18,62 @@ class APIParser:
         }
 
     def get_model(self) -> APIClassDict:
-        mdl: APIClassDict = APIClassDict(
+        self.mdl: APIClassDict = APIClassDict(
             source=self.apiFile,
             version=self._get_model_version(),
-            classes={
-                cn.get("title"): APIClass(
-                    obj_name=cn.get("title"),
-                    isAbstract=False,
-                    properties={
-                        pn: APIClassProperty(
-                            obj_name=pn,
-                            types=self._get_types(pv),
-                            cardinality=self._get_card(pn, pv, cn),
-                        )
-                        for pn, pv in cn.get("properties").items()
-                    },
-                )
-                for cn in self.schemas.values()
-                # if cn.value.get("title") not in mdl.classes
-            },
+            classes={},
         )
-        return mdl
+        self.add_classes(set({f"#/components/schemas/{API_ROOT_SCHEMA}"}))
+        return self.mdl
 
-    def get_property(self, propName, propDef, context) -> APIClassProperty:
+    def add_classes(self, schemaRefs: set):
+        for schemaRef in schemaRefs:
+            schemaName = schemaRef.replace("#/components/schemas/", "")
+            subSchemas = set()
+            if schemaName in self.schemas:
+                clsSchema = self.schemas[schemaName]
+                clsName = clsSchema.get("title")
+                if clsName not in self.mdl.classes:
+                    self.mdl.classes[clsName] = APIClass(
+                        obj_name=clsName,
+                        isAbstract=False,
+                        properties={
+                            pn: self.get_property(
+                                propName=pn,
+                                propDef=pv,
+                                context=clsSchema,
+                                subSchemas=subSchemas,
+                            )
+                            for pn, pv in clsSchema.get("properties").items()
+                        },
+                    )
+            self.add_classes(subSchemas)
+
+    def get_property(
+        self, propName, propDef, context, subSchemas: set
+    ) -> APIClassProperty:
         return APIClassProperty(
             obj_name=propName,
-            types=self._get_types(propDef),
+            types=self._get_types(propDef, subSchemas),
             cardinality=self._get_card(propName, propDef, context),
         )
 
     def _get_model_version(self):
         return parse("$.info.version").find(self.apischema)[0].value
 
-    def _get_types(self, propDef):
+    def _get_types(self, propDef, subSchemas: set):
         typelist = set()
-        self._build_type_list(propDef, typelist)
+        self._build_type_list(propDef, typelist, subSchemas)
         return typelist
 
-    def _build_type_list(self, propDef: dict, types: set):
+    def _build_type_list(self, propDef: dict, types: set, subSchemas: set):
         propType = propDef.get("type")
         propConst = propDef.get("const")
         propAnyOf = propDef.get("anyOf")
         propRef = propDef.get("$ref")
         if propType:
             if propType == "array":
-                self._build_type_list(propDef.get("items"), types)
+                self._build_type_list(propDef.get("items"), types, subSchemas)
             else:
                 types.add(propType)
         elif propConst:
@@ -68,8 +81,9 @@ class APIParser:
         elif propAnyOf:
             for t in propAnyOf:
                 if not ("type" in t and t["type"] == "null"):
-                    self._build_type_list(t, types)
+                    self._build_type_list(t, types, subSchemas)
         elif propRef:
+            subSchemas.update({propRef})
             types.add(self._ref_to_type(propRef))
 
     def _ref_to_type(self, ref: str):

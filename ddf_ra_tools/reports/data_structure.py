@@ -2,7 +2,6 @@ from dataclasses import dataclass, field
 from typing import Optional, List, Dict
 from ddf_ra_tools.model.model_class import ModelClassDict
 from ddf_ra_tools.config import (
-    API_ONLY_CLASSES,
     API_ONLY_PROPERTIES,
     DATA_STRUCTURE_CLASS_KEY_MAP,
     DATA_STRUCTURE_PROPERTY_KEY_MAP,
@@ -120,7 +119,7 @@ class DataStructureReport(yaml.YAMLObject):
                     for prpDef in clsDef.properties.values()
                     if prpDef.apiProperty is not None
                 }
-                if clsDef.umlClass.isAbstract is False
+                if clsDef.umlClass is None or clsDef.umlClass.isAbstract is False
                 else {
                     prpDef.apiProperty.obj_name: DataStructurePropertyRecord(
                         types=[get_type_ref(t) for t in prpDef.types],
@@ -150,7 +149,6 @@ class DataStructureReport(yaml.YAMLObject):
                 },
             ).mapped()
             for clsName, clsDef in combDict.classes.items()
-            if clsName not in API_ONLY_CLASSES
         }
 
     def to_yaml(self, ymlFile: str):

@@ -8,7 +8,8 @@ inflect_engine.defnoun("to", "to")
 inflect_engine.defnoun("of", "of")
 inflect_engine.defnoun("category", "categories")
 
-API_ONLY_CLASSES = ["Wrapper", "HTTPValidationError", "ValidationError"]
+API_ROOT_SCHEMA = "Study-Output"
+API_ONLY_CLASSES = ["ExtensionClass", "ExtensionAttribute"]
 API_ONLY_PROPERTIES = ["instanceType", "extensionAttributes"]
 API_ONLY_CLASS_PROPERTIES = [
     ("InterventionalStudyDesign", "analysisPopulations"),
