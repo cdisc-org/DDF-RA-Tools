@@ -5,6 +5,7 @@ from ddf_ra_tools.config import (
     API_ONLY_PROPERTIES,
     DATA_STRUCTURE_CLASS_KEY_MAP,
     DATA_STRUCTURE_PROPERTY_KEY_MAP,
+    DATA_STRUCTURE_FILE_NAME,
 )
 import yaml
 
@@ -119,7 +120,8 @@ class DataStructureReport(yaml.YAMLObject):
                     for prpDef in clsDef.properties.values()
                     if prpDef.apiProperty is not None
                 }
-                if clsDef.umlClass is None or clsDef.umlClass.isAbstract is False
+                if clsDef.umlClass is None
+                or clsDef.umlClass.isAbstract is False
                 else {
                     prpDef.apiProperty.obj_name: DataStructurePropertyRecord(
                         types=[get_type_ref(t) for t in prpDef.types],
@@ -151,6 +153,6 @@ class DataStructureReport(yaml.YAMLObject):
             for clsName, clsDef in combDict.classes.items()
         }
 
-    def to_yaml(self, ymlFile: str):
+    def write(self, ymlFile: str = DATA_STRUCTURE_FILE_NAME):
         with open(ymlFile, "w", newline="") as f:
             yaml.dump(self.report, f, sort_keys=False)

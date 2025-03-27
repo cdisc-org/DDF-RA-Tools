@@ -2,7 +2,10 @@ from dataclasses import dataclass, field
 from typing import Optional, List
 from ddf_ra_tools.model.model_class import ModelClassDict
 from ddf_ra_tools.utils import format_value
-from ddf_ra_tools.config import DATA_DICTIONARY_COLUMN_MAP
+from ddf_ra_tools.config import (
+    DATA_DICTIONARY_COLUMN_MAP,
+    DATA_DICTIONARY_FILE_NAME,
+)
 
 
 @dataclass
@@ -98,6 +101,6 @@ class DataDictionaryReport:
             )
         )
 
-    def to_md(self, mdFile):
+    def write(self, mdFile: str = DATA_DICTIONARY_FILE_NAME):
         with open(mdFile, "w") as f:
             f.writelines([repr(r) + "\n" for r in self.records])

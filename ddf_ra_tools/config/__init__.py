@@ -1,12 +1,40 @@
+import os
 import inflect
 
 inflect_engine = inflect.engine()
-# TODO: replace with values read in from config file
+
+# The following are custom singular/plural noun combinations that
+# are used to derive valid API ...Id/...Ids attribute synonyms when
+# inflect's default singular/plural conversion is not sufficient.
+# Add new definitions in the form:
+#
+#   inflect_engine.defnoun("<singular form>", "<plural form>")
+#
+# Note that both <singular form> and <plural form> should be in lower case.
+# Only the last part of compound attribute names needs to be defined.
+# For example, for an attribute called "multiPartAttrib", a new noun
+# would only need to be defined for "attrib".
+
 inflect_engine.defnoun("previous", "previous")
 inflect_engine.defnoun("context", "context")
 inflect_engine.defnoun("to", "to")
 inflect_engine.defnoun("of", "of")
 inflect_engine.defnoun("category", "categories")
+
+UML_FILE_NAME = "USDM_UML.xmi"
+CT_FILE_NAME = "USDM_CT.xlsx"
+API_FILE_NAME = "USDM_API.json"
+
+PREV_RELEASE_FOLDER_NAME = os.path.join("resources", "prevRelease")
+CURR_RELEASE_FOLDER_NAME = os.path.join("resources", "currRelease")
+
+UML_DELTA_FILE_ROOT = "UML_DELTA"
+CT_DELTA_FILE_ROOT = "CT_DELTA"
+API_DELTA_FILE_ROOT = "API_DELTA"
+
+DATA_DICTIONARY_FILE_NAME = "dataDictionary.MD"
+DATA_STRUCTURE_FILE_NAME = "dataStructure.yml"
+ALIGNMENT_FILE_NAME = "alignment.csv"
 
 API_ROOT_SCHEMA = "Study-Output"
 API_ONLY_CLASSES = ["ExtensionClass", "ExtensionAttribute"]

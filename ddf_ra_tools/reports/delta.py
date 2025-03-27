@@ -86,7 +86,9 @@ class DeltaReport:
             changes.extend(
                 [
                     {
-                        self.get_label(dtype, itype): DELTA_CHARACTERISTIC_MAP.get(k, k),
+                        self.get_label(
+                            dtype, itype
+                        ): DELTA_CHARACTERISTIC_MAP.get(k, k),
                         self.get_label(dtype, itype, "Status"): "Added",
                         "Diffs": self.get_diffs(
                             d1[k], d1[k].__class__(obj_name=k)
@@ -98,7 +100,9 @@ class DeltaReport:
             changes.extend(
                 [
                     {
-                        self.get_label(dtype, itype): DELTA_CHARACTERISTIC_MAP.get(k, k),
+                        self.get_label(
+                            dtype, itype
+                        ): DELTA_CHARACTERISTIC_MAP.get(k, k),
                         self.get_label(dtype, itype, "Status"): "Deleted",
                         "Diffs": self.get_diffs(
                             d2[k].__class__(obj_name=k), d2[k]
@@ -110,7 +114,9 @@ class DeltaReport:
         changes.extend(
             [
                 {
-                    self.get_label(dtype, itype): DELTA_CHARACTERISTIC_MAP.get(k, k),
+                    self.get_label(dtype, itype): DELTA_CHARACTERISTIC_MAP.get(
+                        k, k
+                    ),
                     self.get_label(dtype, itype, "Status"): "Modified",
                     "Diffs": self.get_diffs(d1[k], d2[k]),
                 }
@@ -136,10 +142,7 @@ class DeltaReport:
             else:
                 diffrow.update(subdiff)
                 diffrow.update(
-                    {
-                        k: format_value(v)
-                        for k, v in diffdetails.items()
-                    }
+                    {k: format_value(v) for k, v in diffdetails.items()}
                 )
                 writer.writerow(
                     {DELTA_COLUMN_MAP.get(k, k): v for k, v in diffrow.items()}

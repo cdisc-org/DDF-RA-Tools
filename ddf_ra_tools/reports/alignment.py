@@ -10,6 +10,7 @@ from ddf_ra_tools.config import (
     NON_CT_PROPERTIES,
     ALIGNMENT_COLUMN_MAP,
     VALID_API_UML_DATATYPES,
+    ALIGNMENT_FILE_NAME,
 )
 import csv
 
@@ -174,7 +175,7 @@ class AlignmentReport:
             )
         )
 
-    def to_csv(self, csvFile: str):
+    def write(self, csvFile: str = ALIGNMENT_FILE_NAME):
         csvfields = [v for v in ALIGNMENT_COLUMN_MAP.values()]
         with open(csvFile, "w", newline="") as f:
             w = csv.DictWriter(f, csvfields, extrasaction="ignore")
