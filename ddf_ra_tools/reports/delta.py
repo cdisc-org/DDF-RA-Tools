@@ -4,7 +4,7 @@ from ddf_ra_tools.model.api_class import APIClassDict
 from ddf_ra_tools.model.ct_class import CTClassDict
 from ddf_ra_tools.model.uml_class import UMLClassDict
 from ddf_ra_tools.utils import format_value
-from ddf_ra_tools.config import DELTA_COLUMN_MAP
+from ddf_ra_tools.config import DELTA_COLUMN_MAP, DELTA_CHARACTERISTIC_MAP
 from copy import deepcopy
 import csv
 import yaml
@@ -25,7 +25,7 @@ class DeltaReport:
     def strip_prefix(s: str):
         for pfx in ["UML", "API", "CT"]:
             if s.startswith(pfx):
-                return s[len(pfx):]
+                return s[len(pfx) :]
         else:
             return s
 
@@ -86,7 +86,7 @@ class DeltaReport:
             changes.extend(
                 [
                     {
-                        self.get_label(dtype, itype): k,
+                        self.get_label(dtype, itype): DELTA_CHARACTERISTIC_MAP.get(k, k),
                         self.get_label(dtype, itype, "Status"): "Added",
                         "Diffs": self.get_diffs(
                             d1[k], d1[k].__class__(obj_name=k)
@@ -98,7 +98,7 @@ class DeltaReport:
             changes.extend(
                 [
                     {
-                        self.get_label(dtype, itype): k,
+                        self.get_label(dtype, itype): DELTA_CHARACTERISTIC_MAP.get(k, k),
                         self.get_label(dtype, itype, "Status"): "Deleted",
                         "Diffs": self.get_diffs(
                             d2[k].__class__(obj_name=k), d2[k]
@@ -110,7 +110,7 @@ class DeltaReport:
         changes.extend(
             [
                 {
-                    self.get_label(dtype, itype): k,
+                    self.get_label(dtype, itype): DELTA_CHARACTERISTIC_MAP.get(k, k),
                     self.get_label(dtype, itype, "Status"): "Modified",
                     "Diffs": self.get_diffs(d1[k], d2[k]),
                 }
@@ -136,7 +136,10 @@ class DeltaReport:
             else:
                 diffrow.update(subdiff)
                 diffrow.update(
-                    {k: format_value(v) for k, v in diffdetails.items()}
+                    {
+                        k: format_value(v)
+                        for k, v in diffdetails.items()
+                    }
                 )
                 writer.writerow(
                     {DELTA_COLUMN_MAP.get(k, k): v for k, v in diffrow.items()}

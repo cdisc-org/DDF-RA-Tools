@@ -63,7 +63,6 @@ class DataDictionaryReport:
                             defn=prpDef.ctProperty.definition
                             if prpDef.ctProperty
                             else None,
-                            #                            cref=self.codelist_ref(prpDef.ctProperty.codelistReference,prpDef.ctProperty.codelistUrl)
                             cref=prpDef.ctProperty.codelistReference
                             if prpDef.ctProperty
                             else None,
@@ -98,9 +97,6 @@ class DataDictionaryReport:
                 ifrm=ifrm,
             )
         )
-
-    #    def codelist_ref(self, cref: str = None, curl: str = None):
-    #        return "[{}]({})".format(cref,curl) if cref and curl else cref
 
     def to_md(self, mdFile):
         with open(mdFile, "w") as f:

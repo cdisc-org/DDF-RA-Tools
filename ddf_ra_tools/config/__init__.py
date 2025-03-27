@@ -57,6 +57,24 @@ DELTA_COLUMN_MAP = {
     "New Value": "New Value",
 }
 
+DELTA_CHARACTERISTIC_MAP = {
+    "isAbstract": "Abstract",
+    "defNciCode": "NCI C-Code",
+    "preferredTerm": "Preferred Term",
+    "definition": "Definition",
+    "superClasses": "Super Classes",
+    "subClasses": "Sub Classes",
+    "properties": "Attributes/Relationships",
+    "types": "Data Type",
+    "role": "Role",
+    "modelRepresentation": "Model Representation",
+    "cardinality": "Cardinality",
+    "hasValueList": "Has Value List",
+    "codelistReference": "Codelist Ref",
+    "codelistUrl": "Codelist URL",
+    "inheritedFrom": "Inherited From",
+}
+
 DATA_DICTIONARY_COLUMN_MAP = {
     "cls": "Class Name",
     "attr": "Attribute Name",
