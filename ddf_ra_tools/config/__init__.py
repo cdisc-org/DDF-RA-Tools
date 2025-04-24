@@ -41,9 +41,7 @@ API_ONLY_CLASSES = ["ExtensionClass", "ExtensionAttribute"]
 API_ONLY_PROPERTIES = ["instanceType", "extensionAttributes"]
 API_ONLY_CLASS_PROPERTIES = [
     ("InterventionalStudyDesign", "analysisPopulations"),
-    ("InterventionalStudyDesign", "eligibilityCriteria"),
     ("ObservationalStudyDesign", "analysisPopulations"),
-    ("ObservationalStudyDesign", "eligibilityCriteria"),
     ("StudyVersion", "conditions"),
     ("StudyVersion", "studyInterventions"),
     ("StudyVersion", "bcSurrogates"),
