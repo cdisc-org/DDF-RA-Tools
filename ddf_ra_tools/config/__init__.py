@@ -133,6 +133,7 @@ DATA_STRUCTURE_PROPERTY_KEY_MAP = {
     "relationshipType": "Relationship Type",
     "modelName": "Model Name",
     "modelRepresentation": "Model Representation",
+    "inheritedFrom": "Inherited From",
 }
 
 TEST_DATA_TEMPLATE_SYSTEM_PROPERTIES = [
