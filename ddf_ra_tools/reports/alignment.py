@@ -109,14 +109,16 @@ class AlignmentReport:
                                     ct=prpDef.ctProperty.role,
                                     uml=prpDef.umlProperty.modelRepresentation,
                                 )
-                            elif (
-                                any(
-                                    t
-                                    for t in prpDef.umlProperty.types
-                                    if t not in combDict.classes
-                                )
-                                and prpDef.ctProperty.role
-                                == "Complex Datatype Relationship"
+                            elif any(
+                                t
+                                for t in prpDef.umlProperty.types
+                                if t in combDict.classes
+                            ) != (
+                                prpDef.ctProperty.role
+                                in [
+                                    "Relationship",
+                                    "Complex Datatype Relationship",
+                                ]
                             ):
                                 self.add_record(
                                     cls=clsName,
