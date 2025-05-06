@@ -21,6 +21,7 @@ from ddf_ra_tools.reports.data_structure import DataStructureReport
 from ddf_ra_tools.reports.data_dictionary import DataDictionaryReport
 from ddf_ra_tools.reports.alignment import AlignmentReport
 from ddf_ra_tools.reports.delta import DeltaReport
+from ddf_ra_tools.reports.test_data_template import TestDataTemplateReport
 
 currXMI = XMIParser(
     os.path.join(CURR_RELEASE_FOLDER_NAME, UML_FILE_NAME)
@@ -68,3 +69,5 @@ DataStructureReport(combDict=combined_model).write()
 DataDictionaryReport(combDict=combined_model).write()
 
 AlignmentReport(combDict=combined_model).write()
+
+TestDataTemplateReport(combDict=combined_model).write()

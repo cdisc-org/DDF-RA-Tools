@@ -35,6 +35,7 @@ API_DELTA_FILE_ROOT = "API_DELTA"
 DATA_DICTIONARY_FILE_NAME = "dataDictionary.MD"
 DATA_STRUCTURE_FILE_NAME = "dataStructure.yml"
 ALIGNMENT_FILE_NAME = "alignment.csv"
+TEST_DATA_TEMPLATE_FILE_NAME = "CORE Test Data Template.xlsx"
 
 API_ROOT_SCHEMA = "Study-Output"
 API_ONLY_CLASSES = ["ExtensionClass", "ExtensionAttribute"]
@@ -133,3 +134,36 @@ DATA_STRUCTURE_PROPERTY_KEY_MAP = {
     "modelName": "Model Name",
     "modelRepresentation": "Model Representation",
 }
+
+TEST_DATA_TEMPLATE_SYSTEM_PROPERTIES = [
+    {
+        "name": "parent_entity",
+        "label": "Parent Entity Name",
+        "dtype": "String",
+        "card": "[1]",
+    },
+    {
+        "name": "parent_id",
+        "label": "Parent Entity Id",
+        "dtype": "String",
+        "card": "[1]",
+    },
+    {
+        "name": "parent_rel",
+        "label": "Name of Relationship from Parent Entity",
+        "dtype": "String",
+        "card": "[1]",
+    },
+    {
+        "name": "rel_type",
+        "label": "Type of Relationship",
+        "dtype": "String",
+        "card": "[1]",
+    },
+]
+
+TEST_DATA_TEMPLATE_EXCLUDE_PROPERTIES = ["extensionAttributes"]
+
+TEST_DATA_TEMPLATE_PRIMITIVE_DATA_TYPES = ["string", "float", "boolean", "null"]
+
+TEST_DATA_TEMPLATE_TYPE_MAP = {"number": "float"}
